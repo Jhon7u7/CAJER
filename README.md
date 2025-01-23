@@ -64,12 +64,13 @@ void retiro() {
 ____________________________________________________________________________________________
 En el codigo implementamos las funciones 
 
-##$
+
 ### Para deposito de dinero:
 
 ____________________________________________________________________________________________
 
-void deposito() {
+
+	void deposito() {
 
 	float dep;
  
