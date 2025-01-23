@@ -82,22 +82,28 @@ void registrarTransaccion(const char *descripcion) {
 void retiro() {
 	float ret;
 	system("cls");
-	printf("Ingrese el valor a retirar: ");
+	printf("Digite el monto a retirar: ");
 	if (scanf("%f", &ret) == 1 && ret > 0) {
 		if (ret <= saldo) {
 			saldo -= ret;
-			printf("El valor %.2f se ha retirado de su cuenta exitosamente.\n", ret);
-			printf("Nuevo saldo: %.2f\n", saldo);
+			printf("El valor %.2f ha sido retirado de su cuenta exitosamente.\n", ret);
+			printf("Saldo actual disponible: %.2f\n", saldo);
+		
 			
 			char transaccion[256];
-			sprintf(transaccion, "Retiro realizado: %.2f. Nuevo saldo: %.2f.", ret, saldo);
+			sprintf(transaccion, "Monto retirado : %.2f. Saldo actual : %.2f.", ret, saldo);
 			registrarTransaccion(transaccion);
 			guardarDatos();  // Guardar los cambios en el archivo
 		} else {
-			printf("Saldo insuficiente.\n");
+			printf("Monto insuficiente.\n");
+			print("Verifique su saldo disponible e Intentelo de nuevo.\n");
 		}
 	} else {
+Retiro
+		printf("Monto inválido digitado. Verifique e Intente nuevamente.\n");
+
 		printf("Monto inválido. Intente nuevamente.\n");
+ CAJERO
 		limpiarBuffer();
 	}
 }
@@ -120,6 +126,9 @@ void deposito() {
 		registrarTransaccion(transaccion);
 		guardarDatos();  // Guardar los cambios en el archivo
 	} else {
+Retiro
+		printf("Monto inválido. Intente nuevamente.\n");
+
 
 		printf("Monto inválido. Intente nuevamente.\n");
 
@@ -133,9 +142,15 @@ void deposito() {
 		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
 
 		printf("Monto inválido. Intente nuevamente.\n");
+ Retiro
+ CAJERO
 
 
 
+ Retiro
+ CAJERO
+
+CAJERO
 		limpiarBuffer();
 	}
 }
@@ -163,6 +178,9 @@ void establecimiento() {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
+<Retiro
+				printf("Monto inválido. Intente nuevamente.\n");
+
 
 				printf("Monto inválido. Intente nuevamente.\n");
 
@@ -174,14 +192,22 @@ void establecimiento() {
 
 				printf("Monto no válido. Intentelo de nuevo.\n");
 
+ Retiro
+CAJERO
 
+ Retiro
+CAJERO
 
+   CAJERO
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
+ Retiro
+		printf("ID no válido. Intente nuevamente.\n");
+
 
 		printf("ID no válido. Intente nuevamente.\n");
 
@@ -192,9 +218,15 @@ void establecimiento() {
 		printf("ID no válido. Intente nuevamente.\n");
 
 		printf("ID no válido. Intentelo de nuevo.\n");
+ Retiro
+ CAJERO
 
 
+Retiro
+ CAJERO
 
+
+CAJERO
 		limpiarBuffer();
 	}
 }
