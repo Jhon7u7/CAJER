@@ -124,12 +124,16 @@ void deposito() {
 		printf("Monto inválido. Intente nuevamente.\n");
 
 
+		printf("Monto inválido. Intente nuevamente.\n");
+
+
 		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
 		}
 	} else {
 		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
 
 		printf("Monto inválido. Intente nuevamente.\n");
+
 
 
 		limpiarBuffer();
@@ -165,7 +169,11 @@ void establecimiento() {
 
 				printf("Monto inválido. Intente nuevamente.\n");
 
+
+				printf("Monto inválido. Intente nuevamente.\n");
+
 				printf("Monto no válido. Intentelo de nuevo.\n");
+
 
 
 				limpiarBuffer();
@@ -180,7 +188,11 @@ void establecimiento() {
 
 		printf("ID no válido. Intente nuevamente.\n");
 
+
+		printf("ID no válido. Intente nuevamente.\n");
+
 		printf("ID no válido. Intentelo de nuevo.\n");
+
 
 
 		limpiarBuffer();
@@ -207,9 +219,48 @@ void mostrarmenu() {
 	printf("3. Retirar dinero\n");
 	printf("4. Pago a establecimientos\n");
 	printf("5. Mostrar historial de transacciones\n");
-	printf("6. Salir\n");
+	printf("6. Solicitar Certificado Bancario\n");
+	printf("7. Salir\n");
 	printf("=============================\n");
 }
+// Función que valide si el correo es válido a travéz de su formato
+int esCorreoValido(const char* correo) {
+    int atPos = -1;
+    int dotPos = -1;
+
+    for (int i = 0; correo[i] != '\0'; i++) {
+        if (correo[i] == '@' && atPos == -1) {
+            atPos = i;
+        } else if (correo[i] == '.' && atPos != -1) {
+            dotPos = i;
+        }
+    }
+
+    return (atPos != -1 && dotPos != -1 && dotPos > atPos);
+}
+
+// Función que permita ingresar un correo y simular un certificado bancario
+void certificado() {
+    char correo[100];
+    limpiarBuffer();
+    while (1) {
+        printf("Ingrese su correo electrónico: ");
+        fgets(correo, sizeof(correo), stdin);  
+        correo[strcspn(correo, "\n")] = 0;  
+//validaciòn del correo electrònico
+        if (strlen(correo) == 0) {
+            printf("No se ha ingresado ningún correo. Intente nuevamente.\n");
+            continue;
+        }
+        if (esCorreoValido(correo)) {
+            printf("Certificado bancario enviado exitosamente al correo: %s\n", correo);
+            break; 
+        } else {
+            printf("El correo ingresado no es válido. Por favor intente nuevamente.\n");
+        }
+    }
+}
+
 
 int main() {
 	int x;
@@ -221,17 +272,19 @@ int main() {
 	printf("Ingrese su tarjeta de crédito o débito para continuar\n");
 	system("pause");
 	system("cls");
-	
 	srand(time(NULL));
 	int numeroCuenta = rand();
+
+	printf("ID del usuario: %d\n", numeroCuenta);
+
 	printf("Número de cuenta: %d\n", numeroCuenta);
 	
 	char inicio[256];
 	sprintf(inicio, "Número de cuenta asignado: %d.", numeroCuenta);
 	registrarTransaccion(inicio);
+
 	
 	do {
-		system("cls");
 		mostrarmenu();
 		printf("Ingrese una opción: ");
 		if (scanf("%d", &x) == 1) {
@@ -259,9 +312,16 @@ int main() {
 				break;
 			case 6:
 				system("cls");
+				certificado();
+				break;
+			case 7:
+				system("cls");
 				registrarTransaccion("Cierre del programa.");
 
+
+
 				guardarDatos();  // Guardar los cambios en el archivo
+
 
 
 				printf("Saliendo del sistema... Que tenga un excelente día :)\n");
@@ -277,7 +337,7 @@ int main() {
 			limpiarBuffer();
 		}
 		system("pause");
-	} while (x != 6);
+	} while (x != 7);
 	
 	return 0;
 }
