@@ -2,35 +2,61 @@
 
 En este codigo se busca recrear todo el funcionamiento de un cajero automatico. Incluye funcionalidades como consulta de saldo, retiro, deposito, pago a establecimientos e historial de transacciones.
 
-## Definicion de requerimientos:
+## Definicion de requerimientos iniciales:
 
 Se identificaron diversas funcionalidades necesarias:
 
-1.- Consulta de saldo
+1.- Consulta de saldo.
 
-2.-Depositos en establecimientos
+2.-Depositos.
 
-3.- Generar cetificados bancarios
+3.-Retiro.
 
-4.- Pagos a establacimientos
+4.- Pagos a establacimientos.
+
+5.- Historial.
 
 ## Implementacion del codigo
+
 
 ### Para la consulta de saldo:
 
 ____________________________________________________________________________________________
 
-				system("cls");
+	system("cls");
 
-				printf("Saldo disponible: %.2f\n", saldo);
+	printf("Saldo disponible: %.2f\n", saldo);
 				
-				char consulta[256];
-				sprintf(consulta, "Consulta de saldo: %.2f.", saldo);
-				registrarTransaccion(consulta);
-				break;
+	char consulta[256];
+	sprintf(consulta, "Consulta de saldo: %.2f.", saldo);
+	registrarTransaccion(consulta);
+	break;
 
 ____________________________________________________________________________________________
 
+### Para el deposito de dinero:
+
+____________________________________________________________________________________________
+
+	void deposito() {
+	float dep;
+	system("cls");
+	printf("Ingrese el valor a depositar: ");
+	if (scanf("%f", &dep) == 1 && dep > 0) {
+		saldo += dep;
+		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
+		printf("Nuevo saldo: %.2f\n", saldo);
+		
+		char transaccion[256];
+		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+		registrarTransaccion(transaccion);
+	} else {
+		printf("Monto inválido. Intente nuevamente.\n");
+		limpiarBuffer();
+	}
+}
+
+____________________________________________________________________________________________
 
 ### Para el retiro de dinero:
 
@@ -62,8 +88,6 @@ ________________________________________________________________________________
 	}
 }
 ____________________________________________________________________________________________
-En el codigo implementamos las funciones 
-
 
 ### Para deposito de dinero:
 
@@ -92,6 +116,74 @@ ________________________________________________________________________________
 	}
 }
 ____________________________________________________________________________________________
-## Pago a establecimientos:
+
+### Pago a establecimientos:
 
 ____________________________________________________________________________________________
+
+	void establecimiento() {
+		float monto;
+		int id;
+		system("cls");
+		printf("Ingrese el ID del establecimiento: ");
+		if (scanf("%d", &id) == 1) {
+			if (id == 172350) {
+				printf("Establecimiento: POLIBURGUERS\n");
+				printf("Ingrese el monto a pagar: ");
+				if (scanf("%f", &monto) == 1 && monto > 0) {
+					if (monto <= saldo) {
+						saldo -= monto;
+						printf("PAGO POR: %.2f EXITOSO.\n", monto);
+						printf("Nuevo saldo: %.2f\n", saldo);
+						
+						char transaccion[256];
+						sprintf(transaccion, "Pago a POLIBURGUERS: %.2f. Nuevo saldo: %.2f.", monto, saldo);
+						registrarTransaccion(transaccion);
+					} else {
+						printf("Saldo insuficiente para realizar el pago.\n");
+					}
+				} else {
+					printf("Monto inválido. Intente nuevamente.\n");
+					limpiarBuffer();
+				}
+			} else {
+				printf("Establecimiento NO REGISTRADO.\n");
+			}
+		} else {
+			printf("ID no válido. Intente nuevamente.\n");
+			limpiarBuffer();
+		}
+	}
+
+
+____________________________________________________________________________________________
+
+## Historial de trasacciones:
+
+____________________________________________________________________________________________
+
+	void registrarTransaccion(const char *descripcion) {
+		if (transacciones < 100) {
+			strcpy(historial[transacciones], descripcion);
+			transacciones++;
+		}
+		archivo = fopen("registro.txt", "a");
+		if (archivo != NULL) {
+			fprintf(archivo, "%s\n", descripcion);
+			fclose(archivo);
+		}
+	void mostrarHistorial() {
+		system("cls");
+		printf("==== Historial de Transacciones ====\n");
+		if (transacciones == 0) {
+			printf("No hay transacciones registradas.\n");
+		} else {
+			for (int i = 0; i < transacciones; i++) {
+				printf("%d. %s\n", i + 1, historial[i]);
+			}
+		}
+		printf("====================================\n");
+	}
+
+____________________________________________________________________________________________
+
