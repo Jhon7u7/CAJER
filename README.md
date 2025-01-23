@@ -2,7 +2,37 @@
 
 En este codigo se busca recrear todo el funcionamiento de un cajero automatico. Incluye funcionalidades como consulta de saldo, retiro, deposito, pago a establecimientos e historial de transacciones.
 
-## Para el retiro de dinero:
+## Definicion de requerimientos:
+
+Se identificaron diversas funcionalidades necesarias:
+
+1.- Consulta de saldo
+
+2.-Depositos en establecimientos
+
+3.- Generar cetificados bancarios
+
+4.- Pagos a establacimientos
+
+## Implementacion del codigo
+
+### Para la consulta de saldo:
+
+____________________________________________________________________________________________
+
+				system("cls");
+
+				printf("Saldo disponible: %.2f\n", saldo);
+				
+				char consulta[256];
+				sprintf(consulta, "Consulta de saldo: %.2f.", saldo);
+				registrarTransaccion(consulta);
+				break;
+
+____________________________________________________________________________________________
+
+
+### Para el retiro de dinero:
 
 ____________________________________________________________________________________________
 void retiro() {
@@ -34,7 +64,8 @@ void retiro() {
 ____________________________________________________________________________________________
 En el codigo implementamos las funciones 
 
-## Para deposito de dinero:
+##$
+### Para deposito de dinero:
 
 ____________________________________________________________________________________________
 
