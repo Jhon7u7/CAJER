@@ -63,10 +63,14 @@ void deposito() {
 		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
 	} else {
+
 		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
 		}
 	} else {
 		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
+
+		printf("Monto inválido. Intente nuevamente.\n");
+
 		limpiarBuffer();
 	}
 }
@@ -83,24 +87,32 @@ void establecimiento() {
 			if (scanf("%f", &monto) == 1 && monto > 0) {
 				if (monto <= saldo) {
 					saldo -= monto;
-					printf("PAGO POR: %.2f EXITOSO.\n", monto);
-					printf("Nuevo saldo: %.2f\n", saldo);
+					printf("El pago que se ha hecho por: %.2f se realizo con éxito.\n", monto);
+					printf("Nuevo saldo que posee: %.2f\n", saldo);
 					
 					char transaccion[256];
-					sprintf(transaccion, "Pago a POLIBURGUERS: %.2f. Nuevo saldo: %.2f.", monto, saldo);
+					sprintf(transaccion, "Pago al establecimiento POLIBURGUERS: %.2f. El nuevo saldo es: %.2f.", monto, saldo);
 					registrarTransaccion(transaccion);
 				} else {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
+
 				printf("Monto inválido. Intente nuevamente.\n");
+
+				printf("Monto no válido. Intentelo de nuevo.\n");
+
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
+
 		printf("ID no válido. Intente nuevamente.\n");
+
+		printf("ID no válido. Intentelo de nuevo.\n");
+
 		limpiarBuffer();
 	}
 }
