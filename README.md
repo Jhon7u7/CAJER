@@ -2,7 +2,8 @@
 
 En este codigo se busca recrear todo el funcionamiento de un cajero automatico. Incluye funcionalidades como consulta de saldo, retiro, deposito, pago a establecimientos e historial de transacciones.
 
-## Definicion de requerimientos iniciales:
+
+## 1| Definicion de requerimientos iniciales:
 
 Se identificaron diversas funcionalidades necesarias:
 
@@ -16,11 +17,13 @@ Se identificaron diversas funcionalidades necesarias:
 
 5.- Historial.
 
-## Implementacion del codigo
+
+## 2| Implementacion del codigo
 
 
 ### Para la consulta de saldo:
 
+Permite mostrar el fondo que tenemos en la cuenta.
 ____________________________________________________________________________________________
 
 	system("cls");
@@ -35,6 +38,8 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________
 
 ### Para el deposito de dinero:
+
+Perminte agregar fundos a la cuenta.
 
 ____________________________________________________________________________________________
 
@@ -59,6 +64,8 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________
 
 ### Para el retiro de dinero:
+
+Gestiona los retiros de sald, verificando su disponibilidad.
 
 ____________________________________________________________________________________________
 	void retiro() {
@@ -89,36 +96,9 @@ ________________________________________________________________________________
 }
 ____________________________________________________________________________________________
 
-### Para deposito de dinero:
-
-____________________________________________________________________________________________
-
-
-	void deposito() {
-
-	float dep;
- 
-	system("cls");
- 
-	printf("Ingrese el valor a depositar: ");
- 
-	if (scanf("%f", &dep) == 1 && dep > 0) {
-		saldo += dep;
-		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
-		printf("Nuevo saldo: %.2f\n", saldo);
-		
-		char transaccion[256];
-		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
-		registrarTransaccion(transaccion);
-	} else {
-		printf("Monto inválido. Intente nuevamente.\n");
-		limpiarBuffer();
-	}
-}
-____________________________________________________________________________________________
-
 ### Pago a establecimientos:
 
+Realiza pagos validando la Id del establecimiento.
 ____________________________________________________________________________________________
 
 	void establecimiento() {
@@ -160,6 +140,7 @@ ________________________________________________________________________________
 
 ## Historial de trasacciones:
 
+Muestra todas las transacciones realizadas por el usuario.
 ____________________________________________________________________________________________
 
 	void registrarTransaccion(const char *descripcion) {
@@ -187,3 +168,36 @@ ________________________________________________________________________________
 
 ____________________________________________________________________________________________
 
+
+## 3| Pruebas:
+
+Se realizaron diversas pruebas para asegurar el correcto funcionamiento del programa:
+
+### Casos de exito:
+ ° Deposito y retiro con un saldo suficiente.
+ 
+ ° Actualizacion del saldo en tiempo real.
+ 
+ ° Actualizacion del historial en tiempo real.
+
+### Casos de error:
+ ° No se registran las transacciones en registro.txt.
+ 
+ ° Pago a establecimientos no registrados
+
+ ° Intentos de retiro mayor al saldo disponible
+
+## 4| Diagrama de flujo
+
+	graph TD;
+	    A[Inicio] --> B[Ingresar tarjeta];
+	    B --> C[Generar número de cuenta];
+	    C --> D[Mostrar menú];
+	    D -->|1| E[Consultar saldo];
+	    D -->|2| F[Hacer depósito];
+	    D -->|3| G[Retirar dinero];
+	    D -->|4| H[Pago a establecimientos];
+	    D -->|5| I[Mostrar historial];
+	    D -->|6| J[Generar certificado];
+	    D -->|7| K[Salir];
+	    K --> L[Fin];
