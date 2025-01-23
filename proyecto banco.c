@@ -122,7 +122,7 @@ void mostrarmenu() {
 	printf("7. Salir\n");
 	printf("=============================\n");
 }
-
+// Función que valide si el correo es válido a travéz de su formato
 int esCorreoValido(const char* correo) {
     int atPos = -1;
     int dotPos = -1;
@@ -138,7 +138,7 @@ int esCorreoValido(const char* correo) {
     return (atPos != -1 && dotPos != -1 && dotPos > atPos);
 }
 
-
+// Función que permita ingresar un correo y simular un certificado bancario
 void certificado() {
     char correo[100];
     limpiarBuffer();
@@ -146,7 +146,7 @@ void certificado() {
         printf("Ingrese su correo electrónico: ");
         fgets(correo, sizeof(correo), stdin);  
         correo[strcspn(correo, "\n")] = 0;  
-
+//validaciòn del correo electrònico
         if (strlen(correo) == 0) {
             printf("No se ha ingresado ningún correo. Intente nuevamente.\n");
             continue;
@@ -176,17 +176,11 @@ int main() {
 	printf("Ingrese su tarjeta de crédito o débito para continuar\n");
 	system("pause");
 	system("cls");
-	
 	srand(time(NULL));
 	int numeroCuenta = rand();
-	printf("Número de cuenta: %d\n", numeroCuenta);
-	
-	char inicio[256];
-	sprintf(inicio, "Número de cuenta asignado: %d.", numeroCuenta);
-	registrarTransaccion(inicio);
+	printf("ID del usuario: %d\n", numeroCuenta);
 	
 	do {
-		system("cls");
 		mostrarmenu();
 		printf("Ingrese una opción: ");
 		if (scanf("%d", &x) == 1) {
