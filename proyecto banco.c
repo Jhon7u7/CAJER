@@ -63,10 +63,10 @@ void deposito() {
 		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
 	} else {
-		printf("Depósito cancelado.\n");
+		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
 		}
 	} else {
-		printf("Monto inválido. Intente nuevamente.\n");
+		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
 		limpiarBuffer();
 	}
 }
