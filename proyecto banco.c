@@ -51,27 +51,33 @@ void deposito() {
 	char confirmacion;
 	system("cls");
 	printf("Ingrese el valor a depositar: ");
-	if (scanf("%f", &dep) == 1 && dep > 0) {
-		printf("¿Está seguro de que desea depositar %.2f? (S/N): ", dep);
-		limpiarBuffer();
-		scanf("%c", &confirmacion);
-		if (confirmacion == 'S' || confirmacion == 's') {
-			saldo += dep;
-			printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
-			printf("Nuevo saldo: %.2f\n", saldo);
+	if (scanf("%f", &dep) == 1) {
+		if (dep > 0) {
+			printf("¿Está seguro de que desea depositar %.2f? (S/N): ", dep);
+			limpiarBuffer();
+			scanf("%c", &confirmacion);
+			if (confirmacion == 'S' || confirmacion == 's') {
+				saldo += dep;
+				printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
+				printf("Nuevo saldo: %.2f\n", saldo);
 
-			char transaccion[256];
-			sprintf(transaccion, "Depósito confirmado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
-			registrarTransaccion(transaccion);
+				char transaccion[256];
+				sprintf(transaccion, "Depósito confirmado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+				registrarTransaccion(transaccion);
+			} else {
+				printf("Depósito cancelado.\n");
+			}
+		} else if (dep == 0) {
+			printf("El monto ingresado es 0. No se puede realizar un depósito con este valor.\n");
 		} else {
-			printf("Depósito cancelado.\n");
+			printf("Monto inválido. Intente nuevamente.\n");
 		}
+		limpiarBuffer();
 	} else {
-		printf("Monto inválido. Intente nuevamente.\n");
+		printf("Entrada no válida. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
-
 
 void establecimiento() {
 	float monto;
