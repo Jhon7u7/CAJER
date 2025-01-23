@@ -71,7 +71,7 @@ void establecimiento() {
 	printf("Ingrese el ID del establecimiento: ");
 	if (scanf("%d", &id) == 1) {
 		if (id == 172350) {
-			printf("Establecimiento: POLIBURGUERS\n");
+			printf("Establecimiento: POLImon\n");
 			printf("Ingrese el monto a pagar: ");
 			if (scanf("%f", &monto) == 1 && monto > 0) {
 				if (monto <= saldo) {
