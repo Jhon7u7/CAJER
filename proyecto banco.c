@@ -12,11 +12,66 @@ void limpiarBuffer() {
 	while (getchar() != '\n');
 }
 
-void registrarTransaccion(const char *descripcion) {
-	if (transacciones < 100) {
-		strcpy(historial[transacciones], descripcion);
+// Función para leer el saldo y las transacciones guardadas
+void cargarDatos() {
+	archivo = fopen("registro.txt", "r+");
+	if (archivo == NULL) {
+		printf("No se pudo abrir el archivo de registro.\n");
+		return;
+	}
+	
+	// Leer saldo
+	fscanf(archivo, "Saldo inicial: %f\n", &saldo);
+	
+	// Leer historial de transacciones
+	while (fgets(historial[transacciones], sizeof(historial[transacciones]), archivo) != NULL) {
 		transacciones++;
 	}
+	
+	fclose(archivo);
+}
+
+// Función para guardar el saldo y las transacciones
+void guardarDatos() {
+	archivo = fopen("registro.txt", "w");
+	if (archivo == NULL) {
+		printf("No se pudo abrir el archivo de registro.\n");
+		return;
+	}
+	
+	// Guardar saldo
+	fprintf(archivo, "Saldo inicial: %.2f\n", saldo);
+	
+	// Guardar historial de transacciones
+	for (int i = 0; i < transacciones; i++) {
+		fprintf(archivo, "%s", historial[i]);
+	}
+	
+	fclose(archivo);
+}
+
+// Registrar transacción con fecha y hora
+void registrarTransaccion(const char *descripcion) {
+	if (transacciones < 100) {
+		// Obtener la fecha y hora actual
+		time_t now;
+		struct tm *tm_info;
+		char fechaHora[26];
+		
+		time(&now);  // Obtiene la hora actual
+		tm_info = localtime(&now);  // Convierte la hora en formato local
+		strftime(fechaHora, sizeof(fechaHora), "%Y-%m-%d %H:%M:%S", tm_info);  // Formatea la fecha y hora
+		
+		// Formato de la transacción con la fecha y hora
+		char transaccionConFecha[300];
+		snprintf(transaccionConFecha, sizeof(transaccionConFecha), "[%s] %s", fechaHora, descripcion);
+		
+		// Guardar en el array de historial
+		strcpy(historial[transacciones], transaccionConFecha);
+		transacciones++;
+	}
+	
+	// Registrar en el archivo de texto
 	archivo = fopen("registro.txt", "a");
 	if (archivo != NULL) {
 		fprintf(archivo, "%s\n", descripcion);
@@ -38,6 +93,7 @@ void retiro() {
 			char transaccion[256];
 			sprintf(transaccion, "Monto retirado : %.2f. Saldo actual : %.2f.", ret, saldo);
 			registrarTransaccion(transaccion);
+			guardarDatos();  // Guardar los cambios en el archivo
 		} else {
 			printf("Monto insuficiente.\n");
 			print("Verifique su saldo disponible e Intentelo de nuevo.\n");
@@ -68,8 +124,12 @@ void deposito() {
 		char transaccion[256];
 		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
+		guardarDatos();  // Guardar los cambios en el archivo
 	} else {
 Retiro
+		printf("Monto inválido. Intente nuevamente.\n");
+
+
 		printf("Monto inválido. Intente nuevamente.\n");
 
 
@@ -79,6 +139,11 @@ Retiro
 		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
 
 		printf("Monto inválido. Intente nuevamente.\n");
+ Retiro
+ CAJERO
+
+
+
  CAJERO
 		limpiarBuffer();
 	}
@@ -102,6 +167,7 @@ void establecimiento() {
 					char transaccion[256];
 					sprintf(transaccion, "Pago al establecimiento POLIBURGUERS: %.2f. El nuevo saldo es: %.2f.", monto, saldo);
 					registrarTransaccion(transaccion);
+					guardarDatos();  // Guardar los cambios en el archivo
 				} else {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
@@ -112,7 +178,14 @@ void establecimiento() {
 
 				printf("Monto inválido. Intente nuevamente.\n");
 
+
+				printf("Monto inválido. Intente nuevamente.\n");
+
 				printf("Monto no válido. Intentelo de nuevo.\n");
+
+ Retiro
+CAJERO
+
 
 CAJERO
 				limpiarBuffer();
@@ -127,7 +200,15 @@ CAJERO
 
 		printf("ID no válido. Intente nuevamente.\n");
 
+
+		printf("ID no válido. Intente nuevamente.\n");
+
 		printf("ID no válido. Intentelo de nuevo.\n");
+ Retiro
+ CAJERO
+
+
+
  CAJERO
 		limpiarBuffer();
 	}
@@ -160,13 +241,8 @@ void mostrarmenu() {
 int main() {
 	int x;
 	
-	archivo = fopen("registro.txt", "w");
-	if (archivo == NULL) {
-		printf("Error al crear el archivo.\n");
-		return 1;
-	}
-	fprintf(archivo, "Inicio del registro de transacciones.\n");
-	fclose(archivo);
+	// Cargar datos desde el archivo al iniciar
+	cargarDatos();
 	
 	system("cls");
 	printf("Ingrese su tarjeta de crédito o débito para continuar\n");
@@ -194,6 +270,7 @@ int main() {
 				char consulta[256];
 				sprintf(consulta, "Consulta de saldo: %.2f.", saldo);
 				registrarTransaccion(consulta);
+				guardarDatos();  // Guardar los cambios en el archivo
 				break;
 			case 2:
 				deposito();
@@ -210,6 +287,10 @@ int main() {
 			case 6:
 				system("cls");
 				registrarTransaccion("Cierre del programa.");
+
+				guardarDatos();  // Guardar los cambios en el archivo
+
+
 				printf("Saliendo del sistema... Que tenga un excelente día :)\n");
 				break;
 			default:
