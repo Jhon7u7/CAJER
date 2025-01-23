@@ -48,26 +48,30 @@ void retiro() {
 
 void deposito() {
 	float dep;
-	char input[50];
+	char confirmacion;
 	system("cls");
 	printf("Ingrese el valor a depositar: ");
-	fgets(input, sizeof(input), stdin);
-	if (input[0] == '\n') {
-        printf("Error: No se ha ingresado ningún valor.\n");
-        return;
 	if (scanf("%f", &dep) == 1 && dep > 0) {
-		saldo += dep;
-		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
-		printf("Nuevo saldo: %.2f\n", saldo);
-		
-		char transaccion[256];
-		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
-		registrarTransaccion(transaccion);
+		printf("¿Está seguro de que desea depositar %.2f? (S/N): ", dep);
+		limpiarBuffer();
+		scanf("%c", &confirmacion);
+		if (confirmacion == 'S' || confirmacion == 's') {
+			saldo += dep;
+			printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
+			printf("Nuevo saldo: %.2f\n", saldo);
+
+			char transaccion[256];
+			sprintf(transaccion, "Depósito confirmado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+			registrarTransaccion(transaccion);
+		} else {
+			printf("Depósito cancelado.\n");
+		}
 	} else {
 		printf("Monto inválido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
+
 
 void establecimiento() {
 	float monto;
