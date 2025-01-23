@@ -41,25 +41,30 @@ void retiro() {
 			printf("Saldo insuficiente.\n");
 		}
 	} else {
-		printf("Monto inv·lido. Intente nuevamente.\n");
+		printf("Monto inv√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
 
 void deposito() {
 	float dep;
+	char input[50];
 	system("cls");
 	printf("Ingrese el valor a depositar: ");
+	fgets(input, sizeof(input), stdin);
+	if (input[0] == '\n') {
+        printf("Error: No se ha ingresado ning√∫n valor.\n");
+        return;
 	if (scanf("%f", &dep) == 1 && dep > 0) {
 		saldo += dep;
 		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
 		printf("Nuevo saldo: %.2f\n", saldo);
 		
 		char transaccion[256];
-		sprintf(transaccion, "DepÛsito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+		sprintf(transaccion, "Dep√≥sito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
 	} else {
-		printf("Monto inv·lido. Intente nuevamente.\n");
+		printf("Monto inv√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
@@ -86,14 +91,14 @@ void establecimiento() {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
-				printf("Monto inv·lido. Intente nuevamente.\n");
+				printf("Monto inv√°lido. Intente nuevamente.\n");
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
-		printf("ID no v·lido. Intente nuevamente.\n");
+		printf("ID no v√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
@@ -112,9 +117,9 @@ void mostrarHistorial() {
 }
 
 void mostrarmenu() {
-	printf("\n==== AplicaciÛn Bancaria ====\n");
+	printf("\n==== Aplicaci√≥n Bancaria ====\n");
 	printf("1. Consultar saldo\n");
-	printf("2. Hacer depÛsito\n");
+	printf("2. Hacer dep√≥sito\n");
 	printf("3. Retirar dinero\n");
 	printf("4. Pago a establecimientos\n");
 	printf("5. Mostrar historial de transacciones\n");
@@ -134,22 +139,22 @@ int main() {
 	fclose(archivo);
 	
 	system("cls");
-	printf("Ingrese su tarjeta de crÈdito o dÈbito para continuar\n");
+	printf("Ingrese su tarjeta de cr√©dito o d√©bito para continuar\n");
 	system("pause");
 	system("cls");
 	
 	srand(time(NULL));
 	int numeroCuenta = rand();
-	printf("N˙mero de cuenta: %d\n", numeroCuenta);
+	printf("N√∫mero de cuenta: %d\n", numeroCuenta);
 	
 	char inicio[256];
-	sprintf(inicio, "N˙mero de cuenta asignado: %d.", numeroCuenta);
+	sprintf(inicio, "N√∫mero de cuenta asignado: %d.", numeroCuenta);
 	registrarTransaccion(inicio);
 	
 	do {
 		system("cls");
 		mostrarmenu();
-		printf("Ingrese una opciÛn: ");
+		printf("Ingrese una opci√≥n: ");
 		if (scanf("%d", &x) == 1) {
 			switch (x) {
 			case 1:
@@ -175,16 +180,16 @@ int main() {
 			case 6:
 				system("cls");
 				registrarTransaccion("Cierre del programa.");
-				printf("Saliendo del sistema... Que tenga un excelente dÌa :)\n");
+				printf("Saliendo del sistema... Que tenga un excelente d√≠a :)\n");
 				break;
 			default:
 				system("cls");
-				printf("OpciÛn no v·lida. Intente nuevamente.\n");
+				printf("Opci√≥n no v√°lida. Intente nuevamente.\n");
 				break;
 			}
 		} else {
 			system("cls");
-			printf("Entrada no v·lida. Intente nuevamente.\n");
+			printf("Entrada no v√°lida. Intente nuevamente.\n");
 			limpiarBuffer();
 		}
 		system("pause");
