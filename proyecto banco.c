@@ -12,11 +12,66 @@ void limpiarBuffer() {
 	while (getchar() != '\n');
 }
 
-void registrarTransaccion(const char *descripcion) {
-	if (transacciones < 100) {
-		strcpy(historial[transacciones], descripcion);
+// Función para leer el saldo y las transacciones guardadas
+void cargarDatos() {
+	archivo = fopen("registro.txt", "r+");
+	if (archivo == NULL) {
+		printf("No se pudo abrir el archivo de registro.\n");
+		return;
+	}
+	
+	// Leer saldo
+	fscanf(archivo, "Saldo inicial: %f\n", &saldo);
+	
+	// Leer historial de transacciones
+	while (fgets(historial[transacciones], sizeof(historial[transacciones]), archivo) != NULL) {
 		transacciones++;
 	}
+	
+	fclose(archivo);
+}
+
+// Función para guardar el saldo y las transacciones
+void guardarDatos() {
+	archivo = fopen("registro.txt", "w");
+	if (archivo == NULL) {
+		printf("No se pudo abrir el archivo de registro.\n");
+		return;
+	}
+	
+	// Guardar saldo
+	fprintf(archivo, "Saldo inicial: %.2f\n", saldo);
+	
+	// Guardar historial de transacciones
+	for (int i = 0; i < transacciones; i++) {
+		fprintf(archivo, "%s", historial[i]);
+	}
+	
+	fclose(archivo);
+}
+
+// Registrar transacción con fecha y hora
+void registrarTransaccion(const char *descripcion) {
+	if (transacciones < 100) {
+		// Obtener la fecha y hora actual
+		time_t now;
+		struct tm *tm_info;
+		char fechaHora[26];
+		
+		time(&now);  // Obtiene la hora actual
+		tm_info = localtime(&now);  // Convierte la hora en formato local
+		strftime(fechaHora, sizeof(fechaHora), "%Y-%m-%d %H:%M:%S", tm_info);  // Formatea la fecha y hora
+		
+		// Formato de la transacción con la fecha y hora
+		char transaccionConFecha[300];
+		snprintf(transaccionConFecha, sizeof(transaccionConFecha), "[%s] %s", fechaHora, descripcion);
+		
+		// Guardar en el array de historial
+		strcpy(historial[transacciones], transaccionConFecha);
+		transacciones++;
+	}
+	
+	// Registrar en el archivo de texto
 	archivo = fopen("registro.txt", "a");
 	if (archivo != NULL) {
 		fprintf(archivo, "%s\n", descripcion);
@@ -37,6 +92,7 @@ void retiro() {
 			char transaccion[256];
 			sprintf(transaccion, "Retiro realizado: %.2f. Nuevo saldo: %.2f.", ret, saldo);
 			registrarTransaccion(transaccion);
+			guardarDatos();  // Guardar los cambios en el archivo
 		} else {
 			printf("Saldo insuficiente.\n");
 		}
@@ -48,9 +104,13 @@ void retiro() {
 
 void deposito() {
 	float dep;
+	char confirmacion;
 	system("cls");
 	printf("Ingrese el valor a depositar: ");
 	if (scanf("%f", &dep) == 1 && dep > 0) {
+		printf("¿Esta seguro que desea depositar %.2f?(S/N): ", dep);
+		scanf("%c", &confirmacion);
+		if (confirmacion == 'S' || confirmacion == 's') {
 		saldo += dep;
 		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
 		printf("Nuevo saldo: %.2f\n", saldo);
@@ -58,8 +118,24 @@ void deposito() {
 		char transaccion[256];
 		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
+		guardarDatos();  // Guardar los cambios en el archivo
 	} else {
+
 		printf("Monto inválido. Intente nuevamente.\n");
+
+
+		printf("Monto inválido. Intente nuevamente.\n");
+
+
+		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
+		}
+	} else {
+		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
+
+		printf("Monto inválido. Intente nuevamente.\n");
+
+
+
 		limpiarBuffer();
 	}
 }
@@ -76,24 +152,49 @@ void establecimiento() {
 			if (scanf("%f", &monto) == 1 && monto > 0) {
 				if (monto <= saldo) {
 					saldo -= monto;
-					printf("PAGO POR: %.2f EXITOSO.\n", monto);
-					printf("Nuevo saldo: %.2f\n", saldo);
+					printf("El pago que se ha hecho por: %.2f se realizo con éxito.\n", monto);
+					printf("Nuevo saldo que posee: %.2f\n", saldo);
 					
 					char transaccion[256];
-					sprintf(transaccion, "Pago a POLIBURGUERS: %.2f. Nuevo saldo: %.2f.", monto, saldo);
+					sprintf(transaccion, "Pago al establecimiento POLIBURGUERS: %.2f. El nuevo saldo es: %.2f.", monto, saldo);
 					registrarTransaccion(transaccion);
+					guardarDatos();  // Guardar los cambios en el archivo
 				} else {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
+
 				printf("Monto inválido. Intente nuevamente.\n");
+
+
+				printf("Monto inválido. Intente nuevamente.\n");
+
+
+				printf("Monto inválido. Intente nuevamente.\n");
+
+				printf("Monto no válido. Intentelo de nuevo.\n");
+
+
+
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
+
 		printf("ID no válido. Intente nuevamente.\n");
+
+
+		printf("ID no válido. Intente nuevamente.\n");
+
+
+		printf("ID no válido. Intente nuevamente.\n");
+
+		printf("ID no válido. Intentelo de nuevo.\n");
+
+
+
 		limpiarBuffer();
 	}
 }
@@ -164,13 +265,8 @@ void certificado() {
 int main() {
 	int x;
 	
-	archivo = fopen("registro.txt", "w");
-	if (archivo == NULL) {
-		printf("Error al crear el archivo.\n");
-		return 1;
-	}
-	fprintf(archivo, "Inicio del registro de transacciones.\n");
-	fclose(archivo);
+	// Cargar datos desde el archivo al iniciar
+	cargarDatos();
 	
 	system("cls");
 	printf("Ingrese su tarjeta de crédito o débito para continuar\n");
@@ -178,7 +274,15 @@ int main() {
 	system("cls");
 	srand(time(NULL));
 	int numeroCuenta = rand();
+
 	printf("ID del usuario: %d\n", numeroCuenta);
+
+	printf("Número de cuenta: %d\n", numeroCuenta);
+	
+	char inicio[256];
+	sprintf(inicio, "Número de cuenta asignado: %d.", numeroCuenta);
+	registrarTransaccion(inicio);
+
 	
 	do {
 		mostrarmenu();
@@ -192,6 +296,7 @@ int main() {
 				char consulta[256];
 				sprintf(consulta, "Consulta de saldo: %.2f.", saldo);
 				registrarTransaccion(consulta);
+				guardarDatos();  // Guardar los cambios en el archivo
 				break;
 			case 2:
 				deposito();
@@ -212,6 +317,13 @@ int main() {
 			case 7:
 				system("cls");
 				registrarTransaccion("Cierre del programa.");
+
+
+
+				guardarDatos();  // Guardar los cambios en el archivo
+
+
+
 				printf("Saliendo del sistema... Que tenga un excelente día :)\n");
 				break;
 			default:
