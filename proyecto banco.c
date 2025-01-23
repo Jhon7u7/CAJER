@@ -41,7 +41,7 @@ void retiro() {
 			printf("Saldo insuficiente.\n");
 		}
 	} else {
-		printf("Monto inv·lido. Intente nuevamente.\n");
+		printf("Monto inv√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
@@ -56,10 +56,10 @@ void deposito() {
 		printf("Nuevo saldo: %.2f\n", saldo);
 		
 		char transaccion[256];
-		sprintf(transaccion, "DepÛsito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+		sprintf(transaccion, "Dep√≥sito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
 	} else {
-		printf("Monto inv·lido. Intente nuevamente.\n");
+		printf("Monto inv√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
@@ -86,14 +86,14 @@ void establecimiento() {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
-				printf("Monto inv·lido. Intente nuevamente.\n");
+				printf("Monto inv√°lido. Intente nuevamente.\n");
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
-		printf("ID no v·lido. Intente nuevamente.\n");
+		printf("ID no v√°lido. Intente nuevamente.\n");
 		limpiarBuffer();
 	}
 }
@@ -112,15 +112,54 @@ void mostrarHistorial() {
 }
 
 void mostrarmenu() {
-	printf("\n==== AplicaciÛn Bancaria ====\n");
+	printf("\n==== Aplicaci√≥n Bancaria ====\n");
 	printf("1. Consultar saldo\n");
-	printf("2. Hacer depÛsito\n");
+	printf("2. Hacer dep√≥sito\n");
 	printf("3. Retirar dinero\n");
 	printf("4. Pago a establecimientos\n");
 	printf("5. Mostrar historial de transacciones\n");
-	printf("6. Salir\n");
+	printf("6. Solicitar Certificado Bancario\n");
+	printf("7. Salir\n");
 	printf("=============================\n");
 }
+
+int esCorreoValido(const char* correo) {
+    int atPos = -1;
+    int dotPos = -1;
+
+    for (int i = 0; correo[i] != '\0'; i++) {
+        if (correo[i] == '@' && atPos == -1) {
+            atPos = i;
+        } else if (correo[i] == '.' && atPos != -1) {
+            dotPos = i;
+        }
+    }
+
+    return (atPos != -1 && dotPos != -1 && dotPos > atPos);
+}
+
+
+void certificado() {
+    char correo[100];
+    limpiarBuffer();
+    while (1) {
+        printf("Ingrese su correo electr√≥nico: ");
+        fgets(correo, sizeof(correo), stdin);  
+        correo[strcspn(correo, "\n")] = 0;  
+
+        if (strlen(correo) == 0) {
+            printf("No se ha ingresado ning√∫n correo. Intente nuevamente.\n");
+            continue;
+        }
+        if (esCorreoValido(correo)) {
+            printf("Certificado bancario enviado exitosamente al correo: %s\n", correo);
+            break; 
+        } else {
+            printf("El correo ingresado no es v√°lido. Por favor intente nuevamente.\n");
+        }
+    }
+}
+
 
 int main() {
 	int x;
@@ -134,22 +173,22 @@ int main() {
 	fclose(archivo);
 	
 	system("cls");
-	printf("Ingrese su tarjeta de crÈdito o dÈbito para continuar\n");
+	printf("Ingrese su tarjeta de cr√©dito o d√©bito para continuar\n");
 	system("pause");
 	system("cls");
 	
 	srand(time(NULL));
 	int numeroCuenta = rand();
-	printf("N˙mero de cuenta: %d\n", numeroCuenta);
+	printf("N√∫mero de cuenta: %d\n", numeroCuenta);
 	
 	char inicio[256];
-	sprintf(inicio, "N˙mero de cuenta asignado: %d.", numeroCuenta);
+	sprintf(inicio, "N√∫mero de cuenta asignado: %d.", numeroCuenta);
 	registrarTransaccion(inicio);
 	
 	do {
 		system("cls");
 		mostrarmenu();
-		printf("Ingrese una opciÛn: ");
+		printf("Ingrese una opci√≥n: ");
 		if (scanf("%d", &x) == 1) {
 			switch (x) {
 			case 1:
@@ -174,21 +213,25 @@ int main() {
 				break;
 			case 6:
 				system("cls");
+				certificado();
+				break;
+			case 7:
+				system("cls");
 				registrarTransaccion("Cierre del programa.");
-				printf("Saliendo del sistema... Que tenga un excelente dÌa :)\n");
+				printf("Saliendo del sistema... Que tenga un excelente d√≠a :)\n");
 				break;
 			default:
 				system("cls");
-				printf("OpciÛn no v·lida. Intente nuevamente.\n");
+				printf("Opci√≥n no v√°lida. Intente nuevamente.\n");
 				break;
 			}
 		} else {
 			system("cls");
-			printf("Entrada no v·lida. Intente nuevamente.\n");
+			printf("Entrada no v√°lida. Intente nuevamente.\n");
 			limpiarBuffer();
 		}
 		system("pause");
-	} while (x != 6);
+	} while (x != 7);
 	
 	return 0;
 }
