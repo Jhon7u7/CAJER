@@ -48,9 +48,13 @@ void retiro() {
 
 void deposito() {
 	float dep;
+	char confirmacion;
 	system("cls");
 	printf("Ingrese el valor a depositar: ");
 	if (scanf("%f", &dep) == 1 && dep > 0) {
+		printf("¿Esta seguro que desea depositar %.2f?(S/N): ", dep);
+		scanf("%c", &confirmacion);
+		if (confirmacion == 'S' || confirmacion == 's') {
 		saldo += dep;
 		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
 		printf("Nuevo saldo: %.2f\n", saldo);
@@ -59,7 +63,14 @@ void deposito() {
 		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
 		registrarTransaccion(transaccion);
 	} else {
+
+		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
+		}
+	} else {
+		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
+
 		printf("Monto inválido. Intente nuevamente.\n");
+
 		limpiarBuffer();
 	}
 }
@@ -86,14 +97,22 @@ void establecimiento() {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
+
+				printf("Monto inválido. Intente nuevamente.\n");
+
 				printf("Monto no válido. Intentelo de nuevo.\n");
+
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
+
+		printf("ID no válido. Intente nuevamente.\n");
+
 		printf("ID no válido. Intentelo de nuevo.\n");
+
 		limpiarBuffer();
 	}
 }
