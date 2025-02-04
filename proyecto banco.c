@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
+//
 float saldo = 1000;
 char historial[100][256];
 int transacciones = 0;
