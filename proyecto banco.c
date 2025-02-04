@@ -2,16 +2,13 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
-
 float saldo = 1000;
 char historial[100][256];
 int transacciones = 0;
 FILE *archivo;
-
 void limpiarBuffer() {
 	while (getchar() != '\n');
 }
-
 // Función para leer el saldo y las transacciones guardadas
 void cargarDatos() {
 	archivo = fopen("registro.txt", "r+");
@@ -30,7 +27,6 @@ void cargarDatos() {
 	
 	fclose(archivo);
 }
-
 // Función para guardar el saldo y las transacciones
 void guardarDatos() {
 	archivo = fopen("registro.txt", "w");
@@ -49,7 +45,6 @@ void guardarDatos() {
 	
 	fclose(archivo);
 }
-
 // Registrar transacción con fecha y hora
 void registrarTransaccion(const char *descripcion) {
 	if (transacciones < 100) {
@@ -78,36 +73,28 @@ void registrarTransaccion(const char *descripcion) {
 		fclose(archivo);
 	}
 }
-
 void retiro() {
 	float ret;
 	system("cls");
-	printf("Digite el monto a retirar: ");
+	printf("Ingrese el valor a retirar: ");
 	if (scanf("%f", &ret) == 1 && ret > 0) {
 		if (ret <= saldo) {
 			saldo -= ret;
-			printf("El valor %.2f ha sido retirado de su cuenta exitosamente.\n", ret);
-			printf("Saldo actual disponible: %.2f\n", saldo);
-		
+			printf("El valor %.2f se ha retirado de su cuenta exitosamente.\n", ret);
+			printf("Nuevo saldo: %.2f\n", saldo);
 			
 			char transaccion[256];
-			sprintf(transaccion, "Monto retirado : %.2f. Saldo actual : %.2f.", ret, saldo);
+			sprintf(transaccion, "Retiro realizado: %.2f. Nuevo saldo: %.2f.", ret, saldo);
 			registrarTransaccion(transaccion);
 			guardarDatos();  // Guardar los cambios en el archivo
 		} else {
-			printf("Monto insuficiente.\n");
-			print("Verifique su saldo disponible e Intentelo de nuevo.\n");
+			printf("Saldo insuficiente.\n");
 		}
 	} else {
-Retiro
-		printf("Monto inválido digitado. Verifique e Intente nuevamente.\n");
-
 		printf("Monto inválido. Intente nuevamente.\n");
- CAJERO
 		limpiarBuffer();
 	}
 }
-
 void deposito() {
 	float dep;
 	char confirmacion;
@@ -117,44 +104,24 @@ void deposito() {
 		printf("¿Esta seguro que desea depositar %.2f?(S/N): ", dep);
 		scanf("%c", &confirmacion);
 		if (confirmacion == 'S' || confirmacion == 's') {
-		saldo += dep;
-		printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
-		printf("Nuevo saldo: %.2f\n", saldo);
-		
-		char transaccion[256];
-		sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
-		registrarTransaccion(transaccion);
-		guardarDatos();  // Guardar los cambios en el archivo
-	} else {
-Retiro
-		printf("Monto inválido. Intente nuevamente.\n");
-
-
-		printf("Monto inválido. Intente nuevamente.\n");
-
-
-		printf("Monto inválido. Intente nuevamente.\n");
-
-
-		printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
+			saldo += dep;
+			printf("El valor %.2f se ha acreditado exitosamente a su cuenta.\n", dep);
+			printf("Nuevo saldo: %.2f\n", saldo);
+			
+			char transaccion[256];
+			sprintf(transaccion, "Depósito realizado: %.2f. Nuevo saldo: %.2f.", dep, saldo);
+			registrarTransaccion(transaccion);
+			guardarDatos();  // Guardar los cambios en el archivo
+		} else {
+			printf("Monto inválido. Intente nuevamente.\n");
+			printf("Monto inválido. Intente nuevamente.\n");
+			printf("Depósito cancelado. No se realizaron los cambios en su cuenta.\n");
 		}
 	} else {
-		printf("Monto inválido. Intente nuevamente.(Recuerde que el valor ingresado debe ser mayor a 0)\n");
-
 		printf("Monto inválido. Intente nuevamente.\n");
- Retiro
- CAJERO
-
-
-
- Retiro
- CAJERO
-
-CAJERO
 		limpiarBuffer();
 	}
 }
-
 void establecimiento() {
 	float monto;
 	int id;
@@ -178,58 +145,38 @@ void establecimiento() {
 					printf("Saldo insuficiente para realizar el pago.\n");
 				}
 			} else {
-<Retiro
 				printf("Monto inválido. Intente nuevamente.\n");
-
-
 				printf("Monto inválido. Intente nuevamente.\n");
-
-
 				printf("Monto inválido. Intente nuevamente.\n");
-
-
-				printf("Monto inválido. Intente nuevamente.\n");
-
 				printf("Monto no válido. Intentelo de nuevo.\n");
-
- Retiro
-CAJERO
-
- Retiro
-CAJERO
-
-   CAJERO
 				limpiarBuffer();
 			}
 		} else {
 			printf("Establecimiento NO REGISTRADO.\n");
 		}
 	} else {
- Retiro
 		printf("ID no válido. Intente nuevamente.\n");
-
-
 		printf("ID no válido. Intente nuevamente.\n");
-
-
 		printf("ID no válido. Intente nuevamente.\n");
-
-
-		printf("ID no válido. Intente nuevamente.\n");
-
 		printf("ID no válido. Intentelo de nuevo.\n");
- Retiro
- CAJERO
-
-
-Retiro
- CAJERO
-
-
-CAJERO
 		limpiarBuffer();
 	}
 }
+void mostrarmenu() {
+	printf("\n==== Aplicación Bancaria ====\n");
+	printf("1. Consultar saldo\n");
+	printf("2. Hacer depósito\n");
+	printf("3. Retirar dinero\n");
+	printf("4. Pago a establecimientos\n");
+	printf("5. Mostrar historial de transacciones\n");
+	printf("6. Solicitar Certificado Bancario\n");
+	printf("7. Salir\n");
+
+}
+
+
+
+
 
 void mostrarHistorial() {
 	system("cls");
@@ -243,82 +190,73 @@ void mostrarHistorial() {
 	}
 	printf("====================================\n");
 }
-
-void mostrarmenu() {
-	printf("\n==== Aplicación Bancaria ====\n");
-	printf("1. Consultar saldo\n");
-	printf("2. Hacer depósito\n");
-	printf("3. Retirar dinero\n");
-	printf("4. Pago a establecimientos\n");
-	printf("5. Mostrar historial de transacciones\n");
-	printf("6. Solicitar Certificado Bancario\n");
-	printf("7. Salir\n");
-	printf("=============================\n");
-}
+	
 // Función que valide si el correo es válido a travéz de su formato
 int esCorreoValido(const char* correo) {
-    int atPos = -1;
-    int dotPos = -1;
-
-    for (int i = 0; correo[i] != '\0'; i++) {
-        if (correo[i] == '@' && atPos == -1) {
-            atPos = i;
-        } else if (correo[i] == '.' && atPos != -1) {
-            dotPos = i;
-        }
-    }
-
-    return (atPos != -1 && dotPos != -1 && dotPos > atPos);
+	int atPos = -1;
+	int dotPos = -1;
+	
+	for (int i = 0; correo[i] != '\0'; i++) {
+		if (correo[i] == '@' && atPos == -1) {
+			atPos = i;
+		} else if (correo[i] == '.' && atPos != -1) {
+			dotPos = i;
+		}
+	}
+	
+	return (atPos != -1 && dotPos != -1 && dotPos > atPos);
 }
 
 // Función que permita ingresar un correo y simular un certificado bancario
 void certificado() {
-    char correo[100];
-    limpiarBuffer();
-    while (1) {
-        printf("Ingrese su correo electrónico: ");
-        fgets(correo, sizeof(correo), stdin);  
-        correo[strcspn(correo, "\n")] = 0;  
-//validaciòn del correo electrònico
-        if (strlen(correo) == 0) {
-            printf("No se ha ingresado ningún correo. Intente nuevamente.\n");
-            continue;
-        }
-        if (esCorreoValido(correo)) {
-            printf("Certificado bancario enviado exitosamente al correo: %s\n", correo);
-            break; 
-        } else {
-            printf("El correo ingresado no es válido. Por favor intente nuevamente.\n");
-        }
-    }
+	char correo[100];
+	limpiarBuffer();
+	while (1) {
+		printf("Ingrese su correo electrónico: ");
+		fgets(correo, sizeof(correo), stdin);  
+		correo[strcspn(correo, "\n")] = 0;  
+		if (strlen(correo) == 0) {
+			printf("No se ha ingresado ningún correo. Intente nuevamente.\n");
+			continue;
+		}
+		if (esCorreoValido(correo)) {
+			printf("Certificado bancario enviado exitosamente al correo: %s\n", correo);
+			break; 
+		} else {
+			printf("El correo ingresado no es válido. Por favor intente nuevamente.\n");
+		}
+	}
 }
 
 
 int main() {
 	int x;
+
 	
-	// Cargar datos desde el archivo al iniciar
 	cargarDatos();
 	
-	system("cls");
 	printf("Ingrese su tarjeta de crédito o débito para continuar\n");
 	system("pause");
-	system("cls");
-	srand(time(NULL));
-	int numeroCuenta = rand();
 
-	printf("ID del usuario: %d\n", numeroCuenta);
 
-	printf("Número de cuenta: %d\n", numeroCuenta);
 	
-	char inicio[256];
-	sprintf(inicio, "Número de cuenta asignado: %d.", numeroCuenta);
-	registrarTransaccion(inicio);
-
+	
 	
 	do {
+		system("cls");
 		mostrarmenu();
-		printf("Ingrese una opción: ");
+		
+		srand(time(NULL));
+		int numeroCuenta = rand();
+		printf("\n===============================\n");
+		printf("ID del usuario: %d\n", numeroCuenta);
+		printf("===============================\n");  
+		
+		
+ 		printf("Ingrese una opción: ");
+		
+
+		
 		if (scanf("%d", &x) == 1) {
 			switch (x) {
 			case 1:
@@ -349,13 +287,7 @@ int main() {
 			case 7:
 				system("cls");
 				registrarTransaccion("Cierre del programa.");
-
-
-
 				guardarDatos();  // Guardar los cambios en el archivo
-
-
-
 				printf("Saliendo del sistema... Que tenga un excelente día :)\n");
 				break;
 			default:
@@ -373,3 +305,5 @@ int main() {
 	
 	return 0;
 }
+ 
+
